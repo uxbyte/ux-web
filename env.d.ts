@@ -1,0 +1,1 @@
+declare const __UX_WEB_VERSION__: string;

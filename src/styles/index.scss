@@ -1,0 +1,88 @@
+// 样式入口文件
+
+@use './element/variables.scss';
+@import 'element-plus/dist/index.css';
+@import 'element-plus/theme-chalk/dark/css-vars.css';
+
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    * {
+        outline: none;
+        box-sizing: border-box;
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+    }
+
+
+    .el-menu {
+        --el-menu-bg-color: transparent;
+    }
+
+    .el-table {
+        .el-image {
+            max-width: 42px;
+            max-height: 32px;
+            display: block;
+            margin: auto;
+        }
+
+        .el-link {
+            width: 100%;
+            overflow: hidden;
+
+            .el-link__inner {
+                display: block;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+        }
+    }
+
+    .el-button.is-text {
+        padding: 8px 0;
+    }
+
+    .el-dialog {
+        .el-input {
+            .el-input__inner {
+                line-height: var(--el-input-height);
+            }
+        }
+    }
+
+    .el-drawer-full {
+        width: 100%;
+        height: 100%;
+
+        .el-drawer__header {
+            margin: 0 !important;
+            padding: 20px !important;
+        }
+
+        .el-drawer__body {
+            padding: 0;
+        }
+    }
+}
+
+.dark {
+
+  html,
+  body {
+    --el-bg-color: #0c0e0d;
+    --el-bg-color-overlay: rgba(37, 41, 53, 1);
+
+    .el-table {
+      --el-table-header-bg-color: rgba(37, 41, 53, 1);
+    }
+  }
+}

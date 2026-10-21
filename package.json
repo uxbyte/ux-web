@@ -1,0 +1,87 @@
+{
+  "name": "ux-web",
+  "version": "0.2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./layout": {
+      "types": "./dist/layout/index.d.ts",
+      "import": "./dist/layout/index.js",
+      "require": "./dist/layout/index.js"
+    },
+    "./router": {
+      "types": "./dist/router/index.d.ts",
+      "import": "./dist/router/index.js",
+      "require": "./dist/router/index.js"
+    },
+    "./resolvers": {
+      "types": "./dist/resolvers/index.d.ts",
+      "import": "./dist/resolvers/index.js",
+      "require": "./dist/resolvers/index.js"
+    },
+    "./index.css": {
+      "import": "./dist/index.css",
+      "require": "./dist/index.css"
+    },
+    "./dist/index.css": {
+      "import": "./dist/index.css",
+      "require": "./dist/index.css"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build && vue-tsc --declaration --emitDeclarationOnly --outDir dist",
+    "prepublishOnly": "npm run test && npm run build",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage"
+  },
+  "peerDependencies": {
+    "element-plus": "^2.13.6",
+    "vue": "^3.5.30",
+    "vue-router": "^5.0.4"
+  },
+  "devDependencies": {
+    "@types/crypto-js": "^4.2.2",
+    "@types/lodash": "^4.17.26",
+    "@types/node": "^25.9.9",
+    "@types/qs": "^6.15.1",
+    "@unocss/core": "^66.11.0",
+    "@unocss/preset-wind4": "66.11.0",
+    "@vitejs/plugin-vue": "^6.0.10",
+    "@vue/tsconfig": "^0.9.1",
+    "@vueuse/core": "^14.4.0",
+    "pinia": "^3.0.4",
+    "pinia-plugin-persistedstate": "^4.7.1",
+    "qs": "^6.16.0",
+    "sass": "^1.105.1",
+    "terser": "^5.51.2",
+    "typescript": "^6.0.3",
+    "unocss": "^66.11.0",
+    "vite": "^8.3.4",
+    "vite-plugin-dts": "^4.5.4",
+    "vite-plugin-vue-layouts": "^0.11.0",
+    "vue-tsc": "^3.3.11"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.2",
+    "crypto-js": "^4.2.0",
+    "decimal.js": "^10.6.0",
+    "lodash": "^4.18.1"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://packages.aliyun.com/62996e9011fc0f0c9e2a382f/npm/npm-registry/"
+  }
+}
