@@ -26,11 +26,11 @@
 ## 安装
 
 ```bash
-npm install ux-web
+npm install @bytegeek/ux-web
 # 或
-pnpm add ux-web
+pnpm add @bytegeek/ux-web
 # 或
-yarn add ux-web
+yarn add @bytegeek/ux-web
 ```
 
 > ux-web 通过 `peerDependencies` 声明以下依赖，需由宿主项目自行安装：
@@ -47,8 +47,8 @@ yarn add ux-web
 ```typescript
 import { createApp } from 'vue'
 import App from './App.vue'
-import UxWeb from 'ux-web'
-import 'ux-web/index.css'
+import UxWeb from '@bytegeek/ux-web'
+import '@bytegeek/ux-web/index.css'
 
 const app = createApp(App)
 app.use(UxWeb)
@@ -714,7 +714,7 @@ createRequest(intercept?: UseFetchOptions): Request
 | object | 是否对象 |
 | isArray | 是否数组 |
 
-- uxCrypto：加解密工具（基于 [crypto-js](https://github.com/brix/crypto-js)），默认 AES（CBC/Pkcs7）。需配置 uxCrypto.key、uxCrypto.iv 参数。
+- uxCrypto：加解密工具。需配置 uxCrypto.key、uxCrypto.iv 参数。
 
 ```typescript
 // 加密（返回密文十六进制串）
