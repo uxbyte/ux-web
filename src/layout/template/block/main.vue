@@ -1,17 +1,15 @@
 <template>
     <div class="ux-layout-main">
-        <div class="main-container">
-            <div class="main-body" v-loading="!bodyPageViewAlive">
-                <slot name="default">
-                    <router-view v-slot="{ Component }" :key="$route.name" v-if="bodyPageViewAlive">
-                        <keep-alive>
-                            <component :is="Component" />
-                        </keep-alive>
-                    </router-view>
-                </slot>
-            </div>
+        <div class="main-body" v-loading="!bodyPageViewAlive">
+            <slot name="default">
+                <router-view v-slot="{ Component }" :key="$route.name" v-if="bodyPageViewAlive">
+                    <keep-alive>
+                        <component :is="Component" />
+                    </keep-alive>
+                </router-view>
+            </slot>
         </div>
-        <div class="main-extend">
+        <div class="main-extend" v-if="!!($slots['main-extend'])">
             <slot name="main-extend">
                 <component :is="layoutManager.slots.value?.['main-extend']" />
             </slot>
@@ -42,23 +40,16 @@ defineSlots<{
     display: flex;
     overflow: hidden;
 
-    .main-container {
+    .main-body {
+        --bg-color: #e9eef3;
         flex: 1;
         width: 0;
+        height: 100%;
         display: flex;
         overflow: hidden;
         position: relative;
         flex-direction: column;
-
-        .main-body {
-            flex: 1;
-            height: 0;
-            overflow: hidden;
-            --bg-color: #e9eef3;
-            display: flex;
-            flex-direction: column;
-            background-color: var(--bg-color);
-        }
+        background-color: var(--bg-color);
     }
 }
 

@@ -1,33 +1,26 @@
 <template>
-    <component :is="layout" v-bind="$attrs">
-        <template v-for="(_, name) in $slots" :key="name" #[name]="slotProps">
-            <slot :name="name" v-bind="slotProps ?? {}"></slot>
-        </template>
-    </component>
-
-    <p-update-pwd v-model="showPage.updatePassword" @ok="(val: okPwdVal) => {
-        emits('update_pwd', val)
-    }" />
-    <p-setting v-model="showPage.setting" />
-
+    <p-layout @update_pwd="emits('update_pwd')">
+        <component :is="layout" v-bind="$attrs">
+            <template v-for="(_, name) in $slots" :key="name" #[name]="slotProps">
+                <slot :name="name" v-bind="slotProps ?? {}"></slot>
+            </template>
+        </component>
+    </p-layout>
 </template>
 <script setup lang="ts">
 
-import { ref, computed, watch, defineAsyncComponent } from 'vue'
+import { ref, computed, watch } from 'vue'
 
-import { showPage } from '../lib/mixin'
 import { uxSettings, event } from './libs/setting'
 
 import type { LayoutTemplate, LayoutEmits } from '../types'
+
+import pLayout from '../components/layout.vue'
 
 import layoutMix from './pages/mix.vue'
 import layoutSide from './pages/side.vue'
 import layoutAside from './pages/aside.vue'
 
-import type { okVal as okPwdVal } from '../components/update_pwd.vue'
-
-const pUpdatePwd = defineAsyncComponent(() => import('../components/update_pwd.vue'))
-const pSetting = defineAsyncComponent(() => import('./block/setting.vue'))
 
 const props = defineProps<{
     layout?: LayoutTemplate

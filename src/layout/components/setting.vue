@@ -12,30 +12,29 @@
         <div class="ux-relative ux-cursor-pointer" @click="() => {
           setLayoutTemplate('mix')
         }">
-          <img src="../../../assets/layout_side.svg" alt="侧边模式" />
-          <img src="../../../assets/check.svg" class="ux-absolute ux-bottom-0 ux-right-0"
-            v-if="layoutTemplate == 'mix'" />
+          <img src="../../assets/layout_side.svg" alt="侧边模式" />
+          <img src="../../assets/check.svg" class="ux-absolute ux-bottom-0 ux-right-0" v-if="layoutTemplate == 'mix'" />
         </div>
         <div class="ux-relative ux-cursor-pointer" @click="() => {
           setLayoutTemplate('aside')
         }">
-          <img src="../../../assets/layout_mix.svg" alt="混合模式" />
-          <img src="../../../assets/check.svg" class="ux-absolute ux-bottom-0 ux-right-0"
+          <img src="../../assets/layout_mix.svg" alt="混合模式" />
+          <img src="../../assets/check.svg" class="ux-absolute ux-bottom-0 ux-right-0"
             v-if="layoutTemplate == 'aside'" />
         </div>
         <div class="ux-relative ux-cursor-pointer" @click="() => {
           setLayoutTemplate('side')
         }">
-          <img src="../../../assets/layout_top.svg" alt="顶部模式" />
-          <img src="../../../assets/check.svg" class="ux-absolute ux-bottom-0 ux-right-0"
+          <img src="../../assets/layout_top.svg" alt="顶部模式" />
+          <img src="../../assets/check.svg" class="ux-absolute ux-bottom-0 ux-right-0"
             v-if="layoutTemplate == 'side'" />
         </div>
       </div>
     </div>
     <el-divider />
-    <div
-      class="ux-flex ux-mt-2.5 ux-items-center ux-bg-#f2f2f2 ux-py-1.5 ux-px-3 ux-rounded-1.25 dark:ux-bg-[var(--el-bg-color-overlay)]"
-      v-for="(item) in options">
+    <div :class="['ux-flex ux-mt-2.5 ux-items-center ux-bg-#f2f2f2 ux-py-1.5 ux-px-3',
+      'ux-rounded-1.25 dark:ux-bg-[var(--el-bg-color-overlay)]'
+    ]" v-for="(item) in options">
       <div class="ux-flex-1 ux-w-0 ux-text-3.5 ux-pr-4 ux-text-justify">{{ item.label }}</div>
       <div class="value">
         <el-switch v-model="item.value" active-text="是" inactive-text="否" @change="handleSettingChange" />
@@ -48,9 +47,9 @@
 
 import { ref, computed } from 'vue'
 
-import { uxSettings, type Options } from '../libs/setting'
+import { uxSettings, type Options } from '../template/libs/setting'
 
-import type { LayoutTemplate } from '../../types'
+import type { LayoutTemplate } from '../types'
 
 const { modelValue = false } = defineProps<{
   modelValue: boolean

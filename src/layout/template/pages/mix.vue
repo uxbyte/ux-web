@@ -1,65 +1,68 @@
 <template>
-    <el-container class="ux_layout_mix ux-size-full">
-        <el-aside :width="`${navbarWidth}px`" :style="[
-            `--bg-color:${styles?.navbar?.bgColor || '#252935'}`,
-            `--box-shadow-color:${styles?.navbar?.shadowColor || '#555555'}`
-        ]">
-            <template v-if="appLogo !== false">
-                <div :style="`height:${styles?.header?.height || 56}px`">
-                    <p-logo />
-                </div>
-            </template>
-            <div class="navbar ux-flex-1 ux-h-0 ux-overflow-hidden">
-                <p-navbar />
-            </div>
-            <div :class="[`ux-h-14 ux-flex-center ux-cursor-pointer`, {
-                'ux-shadow-[0px_-4px_20px_var(--box-shadow-color)]': styles?.navbar?.shadowColor !== false
-            }]" @click="showPage.setting = true">
-                <el-tooltip content="设置" placement="right">
-                    <el-icon :size="24" color="#ffffff">
-                        <Setting />
-                    </el-icon>
-                </el-tooltip>
-            </div>
-        </el-aside>
-        <el-container>
-            <el-header :height="styles?.header?.height || '56px'">
-                <p-header :show-logo="false">
-                    <template v-for="(_, name) in $slots" :key="name" #[name]="slotProps">
-                        <slot :name="name" v-bind="slotProps ?? {}"></slot>
-                    </template>
-                </p-header>
-            </el-header>
-            <el-container class="ux-h-0">
-                <template v-if="listNavbarMenu.length > 0">
-                    <el-aside :width="`${menuAsideWidth}px`" :style="{
-                        '--bg-color': styles?.menu?.bgColor
-                    }">
-                        <el-scrollbar noresize>
-                            <layout-menus :autoHome="false" :list-menu-tree="listNavbarMenu" :menu-active="menuActive"
-                                :is-collapse="showMenubar" :menu-openeds="listMenuOpens" @click="handleClickMenuItem" />
-                        </el-scrollbar>
-                    </el-aside>
+    <p-layout @update_pwd="emits('update_pwd')">
+        <el-container class="ux_layout_mix ux-size-full">
+            <el-aside :width="`${navbarWidth}px`" :style="[
+                `--bg-color:${styles?.navbar?.bgColor || '#252935'}`,
+                `--box-shadow-color:${styles?.navbar?.shadowColor || '#555555'}`
+            ]">
+                <template v-if="appLogo !== false">
+                    <div :style="`height:${styles?.header?.height || 56}px`">
+                        <p-logo />
+                    </div>
                 </template>
-                <el-container>
-                    <el-main>
-                        <p-main>
-                            <template v-for="(_, name) in $slots" :key="name" #[name]="slotProps">
-                                <slot :name="name" v-bind="slotProps ?? {}"></slot>
-                            </template>
-                        </p-main>
-                    </el-main>
-                    <el-footer height="42px">
-                        <p-footer>
-                            <template v-for="(_, name) in $slots" :key="name" #[name]="slotProps">
-                                <slot :name="name" v-bind="slotProps ?? {}"></slot>
-                            </template>
-                        </p-footer>
-                    </el-footer>
+                <div class="navbar ux-flex-1 ux-h-0 ux-overflow-hidden">
+                    <p-navbar />
+                </div>
+                <div :class="[`ux-h-14 ux-flex-center ux-cursor-pointer`, {
+                    'ux-shadow-[0px_-4px_20px_var(--box-shadow-color)]': styles?.navbar?.shadowColor !== false
+                }]" @click="showPage.setting = true">
+                    <el-tooltip content="设置" placement="right">
+                        <el-icon :size="24" color="#ffffff">
+                            <Setting />
+                        </el-icon>
+                    </el-tooltip>
+                </div>
+            </el-aside>
+            <el-container>
+                <el-header :height="styles?.header?.height || '56px'">
+                    <p-header :show-logo="false">
+                        <template v-for="(_, name) in $slots" :key="name" #[name]="slotProps">
+                            <slot :name="name" v-bind="slotProps ?? {}"></slot>
+                        </template>
+                    </p-header>
+                </el-header>
+                <el-container class="ux-h-0">
+                    <template v-if="listNavbarMenu.length > 0">
+                        <el-aside :width="`${menuAsideWidth}px`" :style="{
+                            '--bg-color': styles?.menu?.bgColor
+                        }">
+                            <el-scrollbar noresize>
+                                <layout-menus :autoHome="false" :list-menu-tree="listNavbarMenu"
+                                    :menu-active="menuActive" :is-collapse="showMenubar" :menu-openeds="listMenuOpens"
+                                    @click="handleClickMenuItem" />
+                            </el-scrollbar>
+                        </el-aside>
+                    </template>
+                    <el-container>
+                        <el-main>
+                            <p-main>
+                                <template v-for="(_, name) in $slots" :key="name" #[name]="slotProps">
+                                    <slot :name="name" v-bind="slotProps ?? {}"></slot>
+                                </template>
+                            </p-main>
+                        </el-main>
+                        <el-footer height="42px">
+                            <p-footer>
+                                <template v-for="(_, name) in $slots" :key="name" #[name]="slotProps">
+                                    <slot :name="name" v-bind="slotProps ?? {}"></slot>
+                                </template>
+                            </p-footer>
+                        </el-footer>
+                    </el-container>
                 </el-container>
             </el-container>
         </el-container>
-    </el-container>
+    </p-layout>
 </template>
 
 <script setup lang="ts">
@@ -73,6 +76,8 @@ import type { LayoutProps, LayoutEmits } from '../../types'
 import * as layoutManager from '../../lib/manager'
 import { getListMenu, listMenuOpens, listNavbarMenu, menuActive, handleClickMenuItem } from '../../lib/menu'
 import { showNavbar, showMenubar, showPage } from '../../lib/mixin'
+
+import pLayout from '../../components/layout.vue'
 
 import pLogo from './../block/logo.vue'
 import pNavbar from './../block/navbar.vue'

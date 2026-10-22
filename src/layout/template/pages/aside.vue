@@ -1,86 +1,88 @@
 <template>
-  <el-container class="ux_layout_aside ux-size-full">
-    <el-aside :width="`${navbarWidth}px`" class="ux-flex ux-flex-col">
-      <template v-if="appLogo !== false">
-        <div class="header ux-z-1" :style="`--height:${styles?.header?.height || 56}px`">
-          <p-logo class="ux-size-full" />
-        </div>
-      </template>
-      <div class="wrapper ux-h-0 ux-flex ux-flex-row ux-flex-1">
-        <div class="navbar ux-flex ux-flex-col ux-w-17 light:ux-bg-[#f5f6f8]" :style="[
-          { '--bg-color': styles?.navbar?.bgColor }
-        ]">
-          <div class="list ux-h-0 ux-flex-1">
-            <p-navbar />
+  <p-layout @update_pwd="emits('update_pwd')">
+    <el-container class="ux_layout_aside ux-size-full">
+      <el-aside :width="`${navbarWidth}px`" class="ux-flex ux-flex-col">
+        <template v-if="appLogo !== false">
+          <div class="header ux-z-1" :style="`--height:${styles?.header?.height || 56}px`">
+            <p-logo class="ux-size-full" />
           </div>
-          <div class="tail">
-            <el-popover placement="right" width="300px" :popper-style="{
-              padding: '0px', margin: '0px'
-            }" :show-arrow="false" :offset="2">
-              <template #reference>
-                <div class="ux-w-full ux-h-14.5 ux-flex ux-items-center ux-justify-center">
-                  <el-avatar :size="32" fit="cover" :src="userInfo?.avatar" />
-                </div>
-              </template>
-              <div class="tail-panel">
-                <div class="header">
-                  <el-avatar :size="32" fit="cover" :src="userInfo?.avatar" />
-                  <span class="ux-font-size-4 ux-ml-2.5 dark:ux-color-white">
-                    {{ userInfo?.nickname || '佚名' }}
-                  </span>
-                </div>
-                <div class="tail-item">
-                  <slot name="tail-item"></slot>
-                </div>
-                <div class="tail-item" @click="showPage.updatePassword = true">
-                  <div class="ux-flex ux-items-center ux-h-13">
-                    <el-icon size="22" class="dark:ux-color-white">
-                      <Lock />
-                    </el-icon>
-                    <span class="ux-flex-1 ux-w-0 ux-color-[#333] ux-ml-2.5 dark:ux-color-white">修改密码</span>
-                  </div>
-                </div>
-                <div class="tail-item" @click="handleEvent('logout')">
-                  <div class="ux-flex ux-items-center ux-h-13">
-                    <el-icon size="22" class="dark:ux-color-white">
-                      <SwitchButton />
-                    </el-icon>
-                    <span class="ux-flex-1 ux-w-0 ux-color-[#333] ux-ml-2.5 dark:ux-color-white">退出系统</span>
-                  </div>
-                </div>
-              </div>
-            </el-popover>
-          </div>
-        </div>
-        <el-divider direction="vertical" style="margin: 0;height: 100%;" />
-        <div class="menu ux-flex-1 light:ux-bg-[#fafafb] ux-flex ux-flex-col" :style="[
-          { '--bg-color': styles?.menu?.bgColor }
-        ]">
-          <div class="ux-flex-1 ux-h-0">
-            <el-scrollbar noresize>
-              <layout-menus :autoHome="false" :list-menu-tree="listNavbarMenu" :menu-active="menuActive"
-                :is-collapse="showMenubar" :menu-openeds="listMenuOpens" @click="handleClickMenuItem" />
-            </el-scrollbar>
-          </div>
-          <el-divider style="margin: 0;" />
-          <div class="ux-p-2.5 ux-flex ux-items-center ux-justify-center">
-            <el-tooltip content="设置" placement="top">
-              <el-icon :size="24" class="ux-cursor-pointer" @click="showPage.setting = true">
-                <Setting />
-              </el-icon>
-            </el-tooltip>
-          </div>
-        </div>
-      </div>
-    </el-aside>
-    <el-main style="--el-main-padding: 0;">
-      <p-main>
-        <template v-for="(_, name) in $slots" :key="name" #[name]="slotProps">
-          <slot :name="name" v-bind="slotProps ?? {}"></slot>
         </template>
-      </p-main>
-    </el-main>
-  </el-container>
+        <div class="wrapper ux-h-0 ux-flex ux-flex-row ux-flex-1">
+          <div class="navbar ux-flex ux-flex-col ux-w-17 light:ux-bg-[#f5f6f8]" :style="[
+            { '--bg-color': styles?.navbar?.bgColor }
+          ]">
+            <div class="list ux-h-0 ux-flex-1">
+              <p-navbar />
+            </div>
+            <div class="tail">
+              <el-popover placement="right" width="300px" :popper-style="{
+                padding: '0px', margin: '0px'
+              }" :show-arrow="false" :offset="2">
+                <template #reference>
+                  <div class="ux-w-full ux-h-14.5 ux-flex ux-items-center ux-justify-center">
+                    <el-avatar :size="32" fit="cover" :src="userInfo?.avatar" />
+                  </div>
+                </template>
+                <div class="tail-panel">
+                  <div class="header">
+                    <el-avatar :size="32" fit="cover" :src="userInfo?.avatar" />
+                    <span class="ux-font-size-4 ux-ml-2.5 dark:ux-color-white">
+                      {{ userInfo?.nickname || '佚名' }}
+                    </span>
+                  </div>
+                  <div class="tail-item">
+                    <slot name="tail-item"></slot>
+                  </div>
+                  <div class="tail-item" @click="showPage.updatePassword = true">
+                    <div class="ux-flex ux-items-center ux-h-13">
+                      <el-icon size="22" class="dark:ux-color-white">
+                        <Lock />
+                      </el-icon>
+                      <span class="ux-flex-1 ux-w-0 ux-color-[#333] ux-ml-2.5 dark:ux-color-white">修改密码</span>
+                    </div>
+                  </div>
+                  <div class="tail-item" @click="handleEvent('logout')">
+                    <div class="ux-flex ux-items-center ux-h-13">
+                      <el-icon size="22" class="dark:ux-color-white">
+                        <SwitchButton />
+                      </el-icon>
+                      <span class="ux-flex-1 ux-w-0 ux-color-[#333] ux-ml-2.5 dark:ux-color-white">退出系统</span>
+                    </div>
+                  </div>
+                </div>
+              </el-popover>
+            </div>
+          </div>
+          <el-divider direction="vertical" style="margin: 0;height: 100%;" />
+          <div class="menu ux-flex-1 light:ux-bg-[#fafafb] ux-flex ux-flex-col" :style="[
+            { '--bg-color': styles?.menu?.bgColor }
+          ]">
+            <div class="ux-flex-1 ux-h-0">
+              <el-scrollbar noresize>
+                <layout-menus :autoHome="false" :list-menu-tree="listNavbarMenu" :menu-active="menuActive"
+                  :is-collapse="showMenubar" :menu-openeds="listMenuOpens" @click="handleClickMenuItem" />
+              </el-scrollbar>
+            </div>
+            <el-divider style="margin: 0;" />
+            <div class="ux-p-2.5 ux-flex ux-items-center ux-justify-center">
+              <el-tooltip content="设置" placement="top">
+                <el-icon :size="24" class="ux-cursor-pointer" @click="showPage.setting = true">
+                  <Setting />
+                </el-icon>
+              </el-tooltip>
+            </div>
+          </div>
+        </div>
+      </el-aside>
+      <el-main style="--el-main-padding: 0;">
+        <p-main>
+          <template v-for="(_, name) in $slots" :key="name" #[name]="slotProps">
+            <slot :name="name" v-bind="slotProps ?? {}"></slot>
+          </template>
+        </p-main>
+      </el-main>
+    </el-container>
+  </p-layout>
 </template>
 
 <script setup lang="ts">
@@ -93,6 +95,8 @@ import type { LayoutEvent, LayoutProps, LayoutEmits } from '../../types'
 import * as layoutManager from '../../lib/manager'
 import { getListMenu, listMenuOpens, listNavbarMenu, menuActive, handleClickMenuItem } from '../../lib/menu'
 import { showNavbar, showMenubar, showPage } from '../../lib/mixin'
+
+import pLayout from '../../components/layout.vue'
 
 import pLogo from './../block/logo.vue'
 import pNavbar from './../block/navbar.vue'

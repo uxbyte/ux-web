@@ -38,6 +38,7 @@ yarn add @bytegeek/ux-web
 | 依赖 | 版本 |
 | :-: | - |
 | vue | >=3.5.30 |
+| pinia | >=3.0.4 |
 | vue-router | >=5.0.4 |
 | element-plus | >=2.13.6 |
 
@@ -54,6 +55,38 @@ const app = createApp(App)
 app.use(UxWeb)
 app.mount('#app')
 ```
+
+
+## 自动导入
+
+ux-web 提供 `UxWebResolver`，配合 [unplugin-auto-import](https://github.com/unplugin/unplugin-auto-import)、[unplugin-vue-components](https://github.com/unplugin/unplugin-vue-components) 使用，可自动导入：
+
+- 全局工具：uxUtils、uxVerify、uxCrypto、uxMaths、uxModal、uxCached、uxRequest、uxComponent
+- ElementPlus 图标：`ElIcon` 前缀组件（如 `ElIconSearch` 对应 Search 图标）
+- Layout 组件：`ux-layout` 系列组件（从 ux-web/layout 导入）
+
+```typescript
+// vite.config.ts
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+import { UxWebResolver } from 'ux-web/resolvers'
+
+export default defineConfig({
+  plugins: [
+    AutoImport({
+      resolvers: [UxWebResolver()],
+      // 需在模板中使用 uxUtils 等工具函数时开启
+      vueTemplate: true
+    }),
+    Components({
+      resolvers: [UxWebResolver()]
+    })
+  ]
+})
+```
+
+> 组件库已通过 `app.use(UxWeb)` 注册全部组件与 `ElIcon` 前缀图标，模板中可直接使用 `<ux-pages>`、`<ux-table>`、`<el-icon-*>` 等标签；uxUtils、uxVerify 等工具对象已挂载到全局属性（`$UxWeb` 为全局配置），模板中可直接访问。
+
 
 ## 全局配置项
 
@@ -147,46 +180,7 @@ let config = {
 app.use(UxWeb, config)
 ```
 
-### 配置(Layout模式)
-
-```typescript
-// main.ts
-import { routes } from 'vue-router/auto-routes'
-
-// 路由(Layout)模式
-let config = {
-  // ...其他配置,
-  Layout:{
-    routes,
-    router(app:vue.App,router:Router){
-      // 路由拦截
-      router.beforeEach((to, from, next) => { 
-
-      })
-    }
-  }
-}
-app.use(UxWeb, config)
-```
-
-### 使用方式(Layout模式)
-
-```html
-<template>
-</template>
-
-<script setup>
-
-  definePage({
-      meta: {
-          uxLayout: 'ux-layout-side'// ux-layout-side | ux-layout-aside | ux-layout-mix
-      }
-  })
-</script>
-
-```
-
-### 配置(组件模式)
+### 配置(推荐)-组件模式
 
 ```javascript
 let config = {
@@ -196,7 +190,7 @@ let config = {
 app.use(UxWeb, config)
 ```
 
-### 使用(组件模式)
+### 使用(推荐)-组件模式
 
 ```html
 <template>
@@ -265,6 +259,51 @@ export type LayoutProps = {
 
 ```
 
+
+### 配置 - Layout模式
+> 此种方式不需要app.use(router)，仅需编写拦截器即可
+
+```typescript
+// main.ts
+import { routes } from 'vue-router/auto-routes'
+
+// 路由(Layout)模式
+let config = {
+  // ...其他配置,
+  Layout:{
+    routes,
+    router(app:vue.App,router:Router){
+      // 路由拦截
+      router.beforeEach((to, from, next) => { 
+
+      })
+    }
+  }
+}
+app.use(UxWeb, config)
+```
+
+### 使用方式 - Layout模式
+
+```html
+<template>
+</template>
+
+<script setup>
+  definePage({
+      meta: {
+          uxLayout: 'ux-layout-side'// ux-layout-side | ux-layout-aside | ux-layout-mix
+      }
+  })
+  // 或者
+  <route lang="yaml">
+  meta:
+      layout: 'ux-layout-side'
+  </route>
+</script>
+
+```
+
 ### Layout 菜单统一管理
 
 ```typescript
@@ -312,7 +351,7 @@ let menus:MenuItemInstance[] = menuManager.getRouters();
 | 名称 | 说明| 类型|
 | :-: | - | - |
 | uxLayout | 布局名称（ux-layout-mix、ux-layout-aside、ux-layout-side），false 为不使用布局 | string、false |
-| uxLayout.name | 布局名称（对象形式，默认 default） | string |
+| uxLayout.name | 布局名称（对象形式） | string |
 | uxLayout.menu | 菜单配置 | MenuMeta |
 | uxLayout.menu.activeName | 激活菜单名称 | string、string[] |
 | uxLayout.menu.separator | activeName 为数组时通过连接符号连接，默认 false | false、string |
@@ -768,36 +807,6 @@ uxComponent.table.copyText(text: string, message?: string | false)
 uxComponent.table.copyTooltip(data: TableTooltipData<any>)
 ```
 
-## 自动导入
-
-ux-web 提供 `UxWebResolver`，配合 [unplugin-auto-import](https://github.com/unplugin/unplugin-auto-import)、[unplugin-vue-components](https://github.com/unplugin/unplugin-vue-components) 使用，可自动导入：
-
-- 全局工具：uxUtils、uxVerify、uxCrypto、uxMaths、uxModal、uxCached、uxRequest、uxComponent
-- ElementPlus 图标：`ElIcon` 前缀组件（如 `ElIconSearch` 对应 Search 图标）
-- Layout 组件：`ux-layout` 系列组件（从 ux-web/layout 导入）
-
-```typescript
-// vite.config.ts
-import AutoImport from 'unplugin-auto-import/vite'
-import Components from 'unplugin-vue-components/vite'
-import { UxWebResolver } from 'ux-web/resolvers'
-
-export default defineConfig({
-  plugins: [
-    AutoImport({
-      resolvers: [UxWebResolver()],
-      // 需在模板中使用 uxUtils 等工具函数时开启
-      vueTemplate: true
-    }),
-    Components({
-      resolvers: [UxWebResolver()]
-    })
-  ]
-})
-```
-
-> 组件库已通过 `app.use(UxWeb)` 注册全部组件与 `ElIcon` 前缀图标，模板中可直接使用 `<ux-pages>`、`<ux-table>`、`<el-icon-*>` 等标签；uxUtils、uxVerify 等工具对象已挂载到全局属性（`$UxWeb` 为全局配置），模板中可直接访问。
-
 ## 常见问题
 
 ### 组件样式未生效？
@@ -809,6 +818,14 @@ import 'ux-web/index.css'
 // 或
 import 'ux-web/dist/index.css'
 ```
+
+### 报错：Uncaught TypeError: Cannot redefine property: $route
+
+在使用`layout`路由模式下，仅需编写拦截器传入UxWebConfig即可，无需自行`app.use(router)`
+
+### pinia的处理
+
+宿主应用安装pinia包之后无需自行`app.use(pinia)`，由`ux-web`自行完成，`ux-web`内部使用了`pinia`持久化配置文件、菜单数据等
 
 ### iconfont 图标不显示？
 
