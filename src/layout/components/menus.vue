@@ -5,8 +5,8 @@
             uuid: '', name: '', routeName: '', routePath: '/',
             type: 'MENU', visible: 'Y', usable: 'Y', parentId: '0'
         })" v-if="autoHome">
-            <HomeFilled class="ux-size-6" />
-            <span>首页</span>
+            <HomeFilled class="ux-size-4.5" />
+            <span class="ux-ml-1.5">首页</span>
         </el-menu-item>
         <layout-menu v-bind="$attrs" :show-icon="showIcon" :mode="menuMode ?? (level > 16 ? 'submenu' : 'groups')"
             :list-menu-tree="listMenuTree" @click="emits('click', $event)" />

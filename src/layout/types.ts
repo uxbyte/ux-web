@@ -8,7 +8,7 @@ export type LayoutConfig = {
     router?: (app: vue.App, router: Router) => void
 } | false | 'template'
 
-export type LayoutTemplate = 'aside' | 'side' | 'mix';
+export type LayoutTemplate = 'aside' | 'top' | 'nav' | 'classics' | 'mix';
 export type LayoutEvent = 'userinfo' | 'update_pwd' | 'logout'
 
 export type LayoutProps = {

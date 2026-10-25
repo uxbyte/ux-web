@@ -2,7 +2,7 @@ import * as vue from 'vue'
 import { createLayoutRouter } from '../router'
 import { default as UxLayout } from './template/index.vue'
 
-import type { LayoutConfig, LayoutProps, MenuMeta } from './types'
+import type { LayoutConfig, LayoutProps, LayoutTemplate, MenuMeta } from './types'
 
 export { menuManager } from './lib/menu'
 
@@ -38,15 +38,15 @@ export default { install }
 // 全局组件类型声明（用于扩展 Vue 的全局组件类型）
 declare module 'vue' {
   export interface GlobalComponents {
-    // UxLayout: typeof import('./template/index.vue'),
+    UxLayout: typeof import('./template/index.vue'),
   }
 }
 
 
 declare module 'vue-router' {
   interface RouteMeta {
-    uxLayout?: false | string | {
-      name?: string,
+    uxLayout?: false | LayoutTemplate | {
+      name?: LayoutTemplate,
       // 菜单配置
       menu?: MenuMeta
     },

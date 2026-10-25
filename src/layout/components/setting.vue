@@ -8,26 +8,36 @@
     </div>
     <div class="layout ux-mb-3.75">
       <div class="ux-text-4 ux-font-600 ux-mb-3">导航模式</div>
-      <div class="ux-flex ux-justify-between">
-        <div class="ux-relative ux-cursor-pointer" @click="() => {
-          setLayoutTemplate('mix')
-        }">
-          <img src="../../assets/layout_side.svg" alt="侧边模式" />
-          <img src="../../assets/check.svg" class="ux-absolute ux-bottom-0 ux-right-0" v-if="layoutTemplate == 'mix'" />
-        </div>
-        <div class="ux-relative ux-cursor-pointer" @click="() => {
-          setLayoutTemplate('aside')
-        }">
+      <div class="ux-flex ux-flex-wrap ux-justify-between ux-gap-2.5">
+        <div class="ux-relative ux-cursor-pointer" @click="() => setLayoutTemplate('mix')">
           <img src="../../assets/layout_mix.svg" alt="混合模式" />
-          <img src="../../assets/check.svg" class="ux-absolute ux-bottom-0 ux-right-0"
-            v-if="layoutTemplate == 'aside'" />
+          <template v-if="layoutTemplate == 'mix'">
+            <img src="../../assets/check.svg" class="ux-absolute ux-bottom-0 ux-right-0" />
+          </template>
         </div>
-        <div class="ux-relative ux-cursor-pointer" @click="() => {
-          setLayoutTemplate('side')
-        }">
+        <div class="ux-relative ux-cursor-pointer" @click="() => setLayoutTemplate('classics')">
+          <img src="../../assets/layout_classics.svg" alt="经典模式" />
+          <template v-if="layoutTemplate == 'classics'">
+            <img src="../../assets/check.svg" class="ux-absolute ux-bottom-0 ux-right-0" />
+          </template>
+        </div>
+        <div class="ux-relative ux-cursor-pointer" @click="() => setLayoutTemplate('aside')">
+          <img src="../../assets/layout_aside.svg" alt="侧边模式" />
+          <template v-if="layoutTemplate == 'aside'">
+            <img src="../../assets/check.svg" class="ux-absolute ux-bottom-0 ux-right-0" />
+          </template>
+        </div>
+        <div class="ux-relative ux-cursor-pointer" @click="() => setLayoutTemplate('nav')">
+          <img src="../../assets/layout_nav.svg" alt="NAV模式" />
+          <template v-if="layoutTemplate == 'nav'">
+            <img src="../../assets/check.svg" class="ux-absolute ux-bottom-0 ux-right-0" />
+          </template>
+        </div>
+        <div class="ux-relative ux-cursor-pointer" @click="() => setLayoutTemplate('top')">
           <img src="../../assets/layout_top.svg" alt="顶部模式" />
-          <img src="../../assets/check.svg" class="ux-absolute ux-bottom-0 ux-right-0"
-            v-if="layoutTemplate == 'side'" />
+          <template v-if="layoutTemplate == 'top'">
+            <img src="../../assets/check.svg" class="ux-absolute ux-bottom-0 ux-right-0" />
+          </template>
         </div>
       </div>
     </div>

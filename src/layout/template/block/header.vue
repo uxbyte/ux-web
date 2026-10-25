@@ -1,10 +1,7 @@
 <template>
     <div class="ux_layout_header">
         <div class="left">
-            <p-logo v-if="showLogo" />
-            <span class="name" v-else>
-                {{ appName || $UxWeb.app?.name }}
-            </span>
+            <p-logo v-bind="$attrs" />
         </div>
         <div class="center">
             <slot name="top">
@@ -85,10 +82,9 @@ import { showNavbar, showMenubar, bodyPageViewAlive, handleRefreshRouterView, sh
 import pLogo from './logo.vue'
 
 const {
-    showLogo = true,
     appName = layoutManager.props.value?.appName,
     userInfo = layoutManager.props.value?.userInfo
-} = defineProps<LayoutProps & { showLogo?: boolean }>()
+} = defineProps<LayoutProps>()
 
 const emits = defineEmits<LayoutEmits>()
 
@@ -132,22 +128,8 @@ defineSlots<{
     justify-content: space-between;
 
     .left {
-        gap: 10px;
         display: flex;
         align-items: center;
-
-        .ux-layout-logo {
-            span {
-                color: var(--el-text-color-primary);
-            }
-        }
-
-        .name {
-            font-size: 20px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            font-family: 'AlimamaFangYuanTiVF-Thin', system-ui;
-        }
     }
 
     .center {
@@ -226,14 +208,12 @@ defineSlots<{
     }
 }
 
-.ux_layout_side {
+.ux_layout_classics {
     .ux_layout_header {
         .left {
             width: 220px;
             height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 0 10px;
         }
     }
 }

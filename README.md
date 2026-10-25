@@ -1,6 +1,6 @@
 # ux-web
 
-一套基于Vue3.5 、Vite8 、ElementPlus2.3的适用于Web项目的轻量后台组件库
+一套基于Vue3.5 、Vite8 、ElementPlus2.13的适用于Web项目的轻量后台组件库
 
 ## 集成技术栈
 
@@ -14,7 +14,7 @@
 
 ## 功能特性
 
-- 开箱即用的 Layout 布局：内置 mix（混合）、aside（侧边）、side（顶部）三种布局，支持路由模式与组件模式两种接入方式
+- 开箱即用的 Layout 布局：内置 mix（混合）、classics（经典）、nav（导航）、aside（侧边）、top（顶部）五种布局，支持路由模式与组件模式两种接入方式
 - 菜单统一管理：menuManager 提供菜单更新、获取、激活、监听等能力，支持菜单树、面包屑、多级菜单、外链与 BUTTON 类型权限标识
 - 主题切换：UxTheme 内置明暗主题切换，深度集成 ElementPlus 暗黑模式（dark/css-vars）
 - 请求封装：uxRequest 基于 createFetch(@vueuse/core) 封装，内置接口响应约定处理（401 登录过期、10102 等待凭证刷新后重发）、文件下载、流式请求（SSE）
@@ -26,11 +26,11 @@
 ## 安装
 
 ```bash
-npm install @bytegeek/ux-web
+npm install @bytegeek/ux-web element-plus pinia
 # 或
-pnpm add @bytegeek/ux-web
+pnpm add @bytegeek/ux-web element-plus pinia
 # 或
-yarn add @bytegeek/ux-web
+yarn add @bytegeek/ux-web element-plus pinia
 ```
 
 > ux-web 通过 `peerDependencies` 声明以下依赖，需由宿主项目自行安装：
@@ -69,7 +69,7 @@ ux-web 提供 `UxWebResolver`，配合 [unplugin-auto-import](https://github.com
 // vite.config.ts
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
-import { UxWebResolver } from 'ux-web/resolvers'
+import { UxWebResolver } from '@bytegeek/ux-web/resolvers'
 
 export default defineConfig({
   plugins: [
@@ -151,7 +151,7 @@ app.use(UxWeb, config)
 ### 全局配置管理
 
 ```typescript
-import {configManager} from 'ux-web'
+import {configManager} from '@bytegeek/ux-web'
 // 更新全局配置
 configManager.update(config:UxWebConfig)
 // 获取全局配置
@@ -166,9 +166,40 @@ configManager.get(key:keyof UxWebConfig)
 
 | 布局 | 说明 |
 | :-: | - |
-| mix | 混合模式：左侧一级导航栏，内容区为顶部头部 + 二级菜单 + 主区域 |
-| aside | 侧边模式：左侧完整侧栏（logo + 一级导航 + 二级菜单），内容区为主区域 |
-| side | 顶部模式：顶部头部 + 左侧完整菜单树 + 底部栏 |
+| mix | 混合模式：左侧一级导航栏 + 完整菜单树，顶部头部 ，内容区，底部栏 |
+| aside | 侧边模式：左侧完整侧栏（logo + 一级导航 + 二级菜单），内容区 |
+| classics | 经典模式：顶部头部 ，左侧完整菜单树，内容区，底部栏 |
+| nav | 导航模式：左侧一级菜单 + 内容区 |
+| top | 顶部模式：顶部头部 + 完整菜单树，内容区，底部栏 |
+
+### 类型定义
+```typescript
+type LayoutTemplate = 'aside' | 'top' | 'nav' | 'classics' | 'mix'
+type LayoutProps = {
+    appName?: string
+    appLogo?: string | false
+    appVersion?: string
+    userInfo?: {
+        avatar?: string
+        nickname?: string
+    }
+    styles?: {
+        header?: {
+            height?: number
+        },
+        navbar?: {
+            width?: number
+            direction?: 'column' | 'row'
+            bgColor?: string
+            shadowColor?: string | false
+        }
+        menu?: {
+            width?: number
+            bgColor?: string
+        }
+    }
+}
+```
 
 ### 配置(关闭)
 
@@ -197,7 +228,7 @@ app.use(UxWeb, config)
     <ux-layout></ux-layout>
 </template>
 <script setup lang="ts">
-  import { uxLayout } from 'ux-web/layout'
+  import { uxLayout } from '@bytegeek/ux-web/layout'
 </script>
 ```
 
@@ -205,12 +236,12 @@ app.use(UxWeb, config)
 
 | 名称 | 说明| 类型|
 | :-: | - | - |
-| layout | 布局方式 | Object<'mix'\|'aside'\|'side'> |
-| appName | 应用名称 | Object<string> |
-| appLogo | 应用Logo | Object<string \| false> |
-| appVersion | 应用版本信息 | Object<string> |
-| userInfo | 用户信息 | Object<{avatar: string,nickname: string}> |
-| styles | 样式控制 | Object<LayoutProps['styles']> |
+| layout | 布局方式 | LayoutTemplate |
+| appName | 应用名称 | string |
+| appLogo | 应用Logo | string \| false |
+| appVersion | 应用版本信息 | string |
+| userInfo | 用户信息 | {avatar: string,nickname: string} |
+| styles | 样式控制 | LayoutProps['styles'] |
 
 - 插槽
 
@@ -219,10 +250,10 @@ app.use(UxWeb, config)
 | top | 顶部导航栏 | |
 | top-center | 顶部导航栏中部 | |
 | top-tail | 顶部导航栏右侧 | |
-| default | 中部右侧 | router-view |
 | main-extend | 中部右侧 |  |
 | bottom-left | 底部左侧 |  |
 | bottom-tail | 底部右侧 |  |
+| default | 中部右侧 | router-view |
 
 - 事件
 
@@ -230,34 +261,6 @@ app.use(UxWeb, config)
 | :-: | - | - |
 | update_pwd | 点击顶部下拉菜单‘修改密码’并完成表单后确认触发 | (val: updatePwdOKVal) => void |
 | click | 点击顶部下拉菜单‘修改密码’项以外点击触发 | (type: EventType) => void |
-
-```typescript
-export type LayoutProps = {
-    appName?: string
-    appLogo?: string | false
-    appVersion?: string
-    userInfo?: {
-        avatar?: string
-        nickname?: string
-    }
-    styles?: {
-        header?: {
-            height?: number
-        },
-        navbar?: {
-            width?: number
-            direction?: 'column' | 'row'
-            bgColor?: string
-            shadowColor?: string | false
-        }
-        menu?: {
-            width?: number
-            bgColor?: string
-        }
-    }
-}
-
-```
 
 
 ### 配置 - Layout模式
@@ -292,13 +295,13 @@ app.use(UxWeb, config)
 <script setup>
   definePage({
       meta: {
-          uxLayout: 'ux-layout-side'// ux-layout-side | ux-layout-aside | ux-layout-mix
+          uxLayout: 'classics' as LayoutTemplate
       }
   })
   // 或者
   <route lang="yaml">
   meta:
-      layout: 'ux-layout-side'
+      layout: 'classics'
   </route>
 </script>
 
@@ -307,7 +310,7 @@ app.use(UxWeb, config)
 ### Layout 菜单统一管理
 
 ```typescript
-import { menuManager, type MenuItemInstance } from 'ux-web/layout'
+import { menuManager, type MenuItemInstance } from '@bytegeek/ux-web/layout'
 // 更新菜单项
 menuManager.update([] as MenuItemInstance[]);
 // 获取菜单项
@@ -350,7 +353,7 @@ let menus:MenuItemInstance[] = menuManager.getRouters();
 
 | 名称 | 说明| 类型|
 | :-: | - | - |
-| uxLayout | 布局名称（ux-layout-mix、ux-layout-aside、ux-layout-side），false 为不使用布局 | string、false |
+| uxLayout | 布局名称，false 为不使用布局 | LayoutTemplate \| object<{name?:string}> \| false |
 | uxLayout.name | 布局名称（对象形式） | string |
 | uxLayout.menu | 菜单配置 | MenuMeta |
 | uxLayout.menu.activeName | 激活菜单名称 | string、string[] |
@@ -360,7 +363,7 @@ let menus:MenuItemInstance[] = menuManager.getRouters();
 
 ### 内置设置
 
-布局内置“设置”抽屉（mix、aside 布局可通过左侧栏底部设置图标打开），提供：
+布局内置“设置”抽屉，提供：
 
 | 设置项 | 说明 | 默认值 |
 | :-: | - | - |
@@ -814,9 +817,9 @@ uxComponent.table.copyTooltip(data: TableTooltipData<any>)
 请确认已引入样式文件：
 
 ```typescript
-import 'ux-web/index.css'
+import '@bytegeek/ux-web/index.css'
 // 或
-import 'ux-web/dist/index.css'
+import '@bytegeek/ux-web/dist/index.css'
 ```
 
 ### 报错：Uncaught TypeError: Cannot redefine property: $route
@@ -861,6 +864,6 @@ const handleUpdatePwd = (val: updatePwdOKVal) => {
 ### 如何获取组件库版本？
 
 ```typescript
-import UxWeb from 'ux-web'
+import UxWeb from '@bytegeek/ux-web'
 console.log(UxWeb.version)
 ```
